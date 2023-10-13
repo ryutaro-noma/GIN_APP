@@ -2,7 +2,7 @@ package repository
 
 import (
 	"database/sql"
-	"gin_app/domain"
+	domain "gin_app/domain/model"
 )
 
 type UserRepository interface {

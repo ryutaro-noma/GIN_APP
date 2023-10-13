@@ -2,7 +2,7 @@
 package handlers
 
 import (
-	"gin_app/domain"
+	domain "gin_app/domain/model"
 	"gin_app/domain/repository"
 	"net/http"
 
