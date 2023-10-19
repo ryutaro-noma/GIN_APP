@@ -1,27 +1,28 @@
 package persistence
 
-//"database/sql"
+import (
+	"gin_app/domain/model"
+	"gin_app/domain/repository"
 
-//"gin_app/domain/repository"
+	"github.com/jinzhu/gorm"
+)
 
 type userPersistence struct {
-	UserID string
-	Name   string
-	Email  string
+	Conn *gorm.DB
 }
 
-/*func NewUserPersistence() repository.UserRepository {
-	return &userPersistence{}
-}*/
+func NewUserPersistence(conn *gorm.DB) repository.UserRepository {
+	return &userPersistence{Conn: conn}
+}
 
 // userIDによってユーザ情報を取得する TODO:構造体を返すように修正。いったん単純に返答するように
-func /*(up userPersistence)*/ GetByUserID(userID string) string {
+func (up *userPersistence) GetByUserID(userID string) (user *model.User, err error) {
 
-	user := userPersistence{
-		UserID: "A",
-		Name:   "野間です。",
-		Email:  "~~@gmail.com",
+	db := up.Conn
+
+	if err := db.Find(&user).Error; err != nil {
+		return nil, err
 	}
 
-	return user.UserID
+	return user, nil
 }

@@ -2,20 +2,24 @@
 package routes
 
 import (
+	"gin_app/config"
 	"gin_app/handlers"
+	persistence "gin_app/infrastructure"
+	"gin_app/usecase"
 
-	"github.com/gin-gonic/gin"
+	"github.com/julienschmidt/httprouter"
 )
 
 // TODO:出力内容ごとにパスを分けたい
-func AppRoutes() *gin.Engine {
-	router := gin.Default()
+func AppRoutes() *httprouter.Router {
 
-	// HellowWorldの出力
-	router.GET("hellow-world", handlers.HellowWorld)
+	userPersistence := persistence.NewUserPersistence(config.Connect())
+	userUseCase := usecase.NewUserUseCase(userPersistence)
+	userHandler := handlers.NewUserHandler(userUseCase)
 
 	// ユーザ情報取得
-	router.GET("/get-user-information", handlers.GetUserInfomation)
+	router := httprouter.New()
+	router.GET("/get-user-information", userHandler.GetUserInfomation)
 
 	return router
 }

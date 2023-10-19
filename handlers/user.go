@@ -2,36 +2,41 @@
 package handlers
 
 import (
-	domain "gin_app/domain/model"
-	"gin_app/domain/repository"
+	"encoding/json"
+	"gin_app/usecase"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/rs/xid"
+	"github.com/julienschmidt/httprouter"
 )
 
-// hellow worldを返答するだけ
-func HellowWorld(c *gin.Context) {
-	c.JSON(http.StatusOK, "hellow world")
+type UserHandler interface {
+	GetUserInfomation(http.ResponseWriter, *http.Request, httprouter.Params)
+}
+
+type userHandler struct {
+	userUsecase usecase.UserUseCase
+}
+
+func NewUserHandler(uu usecase.UserUseCase) UserHandler {
+	return &userHandler{
+		userUsecase: uu,
+	}
 }
 
 // ユーザー情報の取得(現状、直書きのデータを出力するだけ)
-func GetUserInfomation(c *gin.Context) {
-	var user domain.User
-	user.UserID = xid.New().String()
-	user.Name = "田中　太郎"
-	user.Email = "xxx@gmail.com"
-	c.JSON(http.StatusOK, user)
-}
+func (uh userHandler) GetUserInfomation(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
 
-// ユーザー情報の更新(未実装)　TODO：追々Dockerと接続してデータ更新できるようにしたい。
-func NewUserHandler(c *gin.Context) {
-	var user repository.UserRepository
-	// リクエストデータを取り出す
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error()})
+	id := r.FormValue("userID")
+	// usecaseの呼び出し
+	user, err := uh.userUsecase.GetByUserID(id)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	// クライアントにレスポンスを返却
+	if err = json.NewEncoder(w).Encode(user); err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 }

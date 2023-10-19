@@ -1,26 +1,29 @@
 package usecase
 
 import (
-	"database/sql"
+	"gin_app/domain/model"
+	"gin_app/domain/repository"
 )
 
-// User における UseCase のインターフェース
-/*type UserUseCase interface {
-	GetByUesrID(DB *sql.DB, userID string) (domain.User, error)
-	Insert(DB *sql.DB, userID, name, email string) error
-}*/
+type UserUseCase interface {
+	GetByUserID(id string) (user *model.User, err error)
+}
 
-/*type userUseCase struct {
+type userUseCase struct {
 	userRepository repository.UserRepository
-}*/
+}
 
-// Userデータに対するusecaseを生成
-/*func NewUserUseCase(ur repository.UserRepository) UserUseCase {
+func NewUserUseCase(ur repository.UserRepository) UserUseCase {
 	return &userUseCase{
 		userRepository: ur,
 	}
-}*/
+}
 
-func /*(uu UserUsecase)*/ GetByUserID(DB *sql.DB, userID string) string /**domain.User, error*/ {
-	return "A"
+func (uu userUseCase) GetByUserID(id string) (user *model.User, err error) {
+	// Persistenceを呼び出し
+	user, err = uu.userRepository.GetByUserID(id)
+	if err != nil {
+		return nil, err
+	}
+	return user, err
 }
