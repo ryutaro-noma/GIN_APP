@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"gin_app/domain/model"
 
 	"github.com/jinzhu/gorm"
@@ -30,10 +28,7 @@ func Connect() *gorm.DB {
 	godotenv.Load()*/
 
 	// DB接続
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8",
-		"user", "p@ssw0rd", "mysql:3306", "hoge-db",
-	)
-	db, err = gorm.Open("mysql", dataSourceName)
+	db, err = gorm.Open("mysql", "user:p@ssw0rd@tcp(127.0.0.1:3306)/hoge-db?charset=utf8mb4")
 	if err != nil {
 		panic(err)
 	}

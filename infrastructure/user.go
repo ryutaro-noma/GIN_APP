@@ -20,7 +20,7 @@ func (up *userPersistence) GetByUserID(userID string) (user *model.User, err err
 
 	db := up.Conn
 
-	if err := db.Find(&user).Error; err != nil {
+	if err := db.Find(&user, userID).Error; err != nil {
 		return nil, err
 	}
 
