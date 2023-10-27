@@ -16,13 +16,15 @@ func NewUserPersistence(conn *gorm.DB) repository.UserRepository {
 }
 
 // userIDによってユーザ情報を取得する TODO:構造体を返すように修正。いったん単純に返答するように
-func (up *userPersistence) GetByUserID(userID string) (user *model.User, err error) {
+func (up *userPersistence) GetByUserID(userID string) (User *model.User, err error) {
 
 	db := up.Conn
 
-	if err := db.Find(&user, userID).Error; err != nil {
+	User = &model.User{}
+
+	if err := db.Table("User").Where("UserId = ?", userID).First(&User).Error; err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	return User, nil
 }
