@@ -1,11 +1,11 @@
-create table User(
-    UserId int auto_increment,
-    UserName text,
-    Email text,
-    primary key (UserId)
+create table users(
+    user_id int auto_increment,
+    user_name text,
+    email text,
+    primary key (user_id)
 ) ;
 
-insert into User(UserName Email)values('aaa', '1111');
-insert into User(UserName Email)values('bbb', '2222');
-insert into User(UserName Email)values('ccc', '3333');
-insert into User(UserName Email)values('ddd', '4444');
+insert into users(user_name email)values('aaa', '1111');
+insert into User(user_name email)values('bbb', '2222');
+insert into User(user_name email)values('ccc', '3333');
+insert into User(user_name email)values('ddd', '4444');
