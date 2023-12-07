@@ -22,9 +22,14 @@ func (up *userPersistence) GetByUserID(userID string) (User *model.User, err err
 
 	User = &model.User{}
 
-	if err := db.Where("user_id = ?", userID).First(&User).Error; err != nil {
+	// Preloadでusersに紐づくuser_informationsのデータを取得したい。
+	if err := db.Preload("UserInformation").Find(&User, "user_id = ?", userID).Error; err != nil {
 		return nil, err
 	}
+
+	/*if err := db.Where("user_id = ?", userID).First(&User).Error; err != nil {
+		return nil, err
+	}*/
 
 	return User, nil
 }
