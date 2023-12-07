@@ -10,7 +10,7 @@ import (
 )
 
 type UserHandler interface {
-	GetUserInfomation(http.ResponseWriter, *http.Request, httprouter.Params)
+	GetUser(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type userHandler struct {
@@ -24,7 +24,7 @@ func NewUserHandler(uu usecase.UserUseCase) UserHandler {
 }
 
 // ユーザー情報の取得(現状、直書きのデータを出力するだけ)
-func (uh userHandler) GetUserInfomation(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+func (uh userHandler) GetUser(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
 
 	id := r.FormValue("userID")
 	// usecaseの呼び出し
