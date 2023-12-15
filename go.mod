@@ -3,6 +3,11 @@ module gin_app
 go 1.21.0
 
 require (
+	github.com/golang/mock v1.6.0
+	github.com/google/go-cmp v0.6.0
+)
+
+require (
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect

@@ -5,5 +5,5 @@ type User struct {
 	UserInformationId string          `gorm:"not null"`
 	UserName          string          `gorm:"not null"`
 	Email             string          `gorm:"not null"`
-	UserInformation   UserInformation `gorm:"foreignKey:Id" json:"user_information"`
+	UserInformation   UserInformation `gorm:"foreignKey:UserInformationId" json:"user_information"`
 }
