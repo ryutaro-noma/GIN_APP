@@ -2,32 +2,19 @@ package usecase
 
 import (
 	"gin_app/domain/model"
-	"gin_app/domain/repository/repository_mock"
+	mock_repository "gin_app/domain/repository/repository_mock"
+	"reflect"
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-cmp/cmp"
 )
 
-func Test_GetByUserInformation(t *testing.T) {
+func Test_userInformationUseCase_GetByUserInformation(t1 *testing.T) {
+	type args struct {
+		id string
+	}
 
-	mockCtrl := gomock.NewController(t)
-	defer mockCtrl.Finish()
-	mock := repository_mock.NewMockUserInformationRepository(mockCtrl)
-	mock.EXPECT().GetByUserInformation("1").Return(
-		&model.UserInformation{
-			Id:        1,
-			LastName:  "山田",
-			FirstName: "太郎",
-			Sex:       "男",
-			Age:       25,
-			PostCode:  "111-1111",
-			Address:   "東京都港区1-1-1",
-			Remarks:   "",
-		},
-	)
-
-	var want *model.UserInformation = &model.UserInformation{
+	wantUserInformation := model.UserInformation{
 		Id:        1,
 		LastName:  "山田",
 		FirstName: "太郎",
@@ -38,12 +25,44 @@ func Test_GetByUserInformation(t *testing.T) {
 		Remarks:   "",
 	}
 
-	got, err := UserInformationUseCase.GetByUserInformation(mock, "1")
-	if err != nil {
-		t.Error("error happen")
+	tests := []struct {
+		name          string
+		uu            userInformationUseCase
+		args          args
+		prepareMockFn func(m *mock_repository.MockUserInformationRepository)
+		wantUser      *model.UserInformation
+		wantErr       bool
+	}{
+		{
+			name: "success",
+			args: args{id: "1"},
+			prepareMockFn: func(m *mock_repository.MockUserInformationRepository) {
+				m.EXPECT().GetByUserInformation("1").Return(&wantUserInformation, nil)
+			},
+			wantUser: &wantUserInformation,
+			wantErr:  false,
+		},
 	}
+	for _, tt := range tests {
+		t1.Run(tt.name, func(t1 *testing.T) {
 
-	if diff := cmp.Diff(got, want); diff != "" {
-		t.Errorf("UserInformation Data miss match :%s", diff)
+			ctrl := gomock.NewController(t1)
+			defer ctrl.Finish()
+
+			mock := mock_repository.NewMockUserInformationRepository(ctrl)
+			tt.prepareMockFn(mock)
+
+			t := userInformationUseCase{
+				userInformationRepository: mock,
+			}
+			gotUser, err := t.GetByUserInformation(tt.args.id)
+			if (err != nil) != tt.wantErr {
+				t1.Errorf("userInformationUseCase.GetByUserInformation() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotUser, tt.wantUser) {
+				t1.Errorf("userInformationUseCase.GetByUserInformation() = %v, want %v", gotUser, tt.wantUser)
+			}
+		})
 	}
 }
