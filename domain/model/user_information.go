@@ -9,4 +9,5 @@ type UserInformation struct {
 	PostCode  string `gorm:"not null"`
 	Address   string `gorm:"not null"`
 	Remarks   string `gorm:"not null"`
+	User      User   `gorm:"not null"`
 }

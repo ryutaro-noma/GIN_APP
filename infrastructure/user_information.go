@@ -22,7 +22,7 @@ func (up *userInformationPersistence) GetByUserInformation(userID string) (UserI
 
 	UserInfo = &model.UserInformation{}
 
-	if err := db.Where("id = ?", userID).First(&UserInfo).Error; err != nil {
+	if err := db.Preload("User").Where("id = ?", userID).First(&UserInfo).Error; err != nil {
 		return nil, err
 	}
 
