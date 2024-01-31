@@ -24,11 +24,6 @@ func NewUserInformationPersistence() repository.UserInformationRepository {
 
 // userIDによってユーザ情報を取得する
 func (up *userInformationPersistence) GetByUserInformation(userID string) (UserInfo *model.UserInformation, err error) {
-	/*for _, v := range dataStore {
-		if v.Id == userID {
-			return v, nil
-		}
-	}*/
 	if strconv.Itoa(dataStore.Id) == userID {
 		return &dataStore, nil
 	}
