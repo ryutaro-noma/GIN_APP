@@ -4,7 +4,8 @@ package routes
 import (
 	"gin_app/config"
 	"gin_app/handlers"
-	persistence "gin_app/infrastructure"
+	persistence "gin_app/infrastructure/db"
+	"gin_app/infrastructure/inmemory"
 	"gin_app/usecase"
 
 	"github.com/julienschmidt/httprouter"
@@ -17,7 +18,8 @@ func AppRoutes() *httprouter.Router {
 	userUseCase := usecase.NewUserUseCase(userPersistence)
 	userHandler := handlers.NewUserHandler(userUseCase)
 
-	userInformationPersistence := persistence.NewUserInformationPersistence(config.Connect())
+	//userInformationPersistence := persistence.NewUserInformationPersistence(config.Connect())
+	userInformationPersistence := inmemory.NewUserInformationPersistence()
 	userInformationUseCase := usecase.NewUserInformationUseCase(userInformationPersistence)
 	userInformationHandler := handlers.NewUserInformationHandler(userInformationUseCase)
 

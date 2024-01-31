@@ -18,7 +18,7 @@ create table user_information(
     primary key (id)
 ) ;
 
-insert into users(user_information_id user_name email)values(1,'山田太郎', 'email.com1');
+insert into users(user_information_id,user_name,email)values(1,'山田太郎', 'email.com1');
 insert into users(user_information_id,user_name,email)values(2,'田中太郎', 'email.com2');
 insert into users(user_information_id,user_name,email)values(3,'村田花子', 'email.com3');
 insert into users(user_information_id,user_name,email)values(4,'高橋姫子', 'email.com4');
